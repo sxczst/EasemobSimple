@@ -29,6 +29,9 @@ class Model private constructor() {
 
     fun initialize(context: Context) {
         mContext = context
+
+        // 开启全局的监听
+        EventListener(context)
     }
 
     /**

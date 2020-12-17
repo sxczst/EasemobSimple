@@ -13,6 +13,13 @@ class InvitationInfo(
 ) {
     constructor() : this(null, null, null, null)
 
+    constructor(user: UserInfo?, reason: String?, inviteStatus: InviteStatus?) : this(
+        user,
+        null,
+        reason,
+        inviteStatus
+    )
+
     enum class InviteStatus {
         // 联系人邀请信息状态
         NEW_INVITE,     //新的邀请
