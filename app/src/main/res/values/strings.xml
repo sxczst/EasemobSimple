@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">即时通信</string>
+    <string name="login_pager">登录界面</string>
+    <string name="splash_pager">欢迎界面</string>
+</resources>
