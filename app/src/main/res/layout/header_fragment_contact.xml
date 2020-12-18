@@ -26,6 +26,14 @@
             android:layout_marginLeft="10dp"
             android:text="好友邀请"
             android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/iv_contact_red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="5dp"
+            android:src="@android:drawable/ic_notification_overlay" />
     </LinearLayout>
 
     <LinearLayout

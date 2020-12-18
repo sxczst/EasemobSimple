@@ -17,7 +17,7 @@ class InviteTable {
         const val COL_REASON = "reason"         // 邀请的原因
         const val COL_STATUS = "status"         // 邀请的状态
 
-        const val CREATE_TAB = "create table $TAB_NAME ($COL_USER_HXID text primary key" +
+        const val CREATE_TAB = "create table $TAB_NAME ($COL_USER_HXID text primary key," +
                 "$COL_USER_NAME text," +
                 "$COL_GROUP_HXID text," +
                 "$COL_GROUP_NAME text," +

@@ -35,7 +35,7 @@ class InviteDao(var dbHelper: DBHelper) {
             }
         }
         // 执行添加语句
-        dbHelper.readableDatabase.replace(InviteTable.TAB_NAME, null, values)
+        dbHelper.writableDatabase.replace(InviteTable.TAB_NAME, null, values)
     }
 
     /**

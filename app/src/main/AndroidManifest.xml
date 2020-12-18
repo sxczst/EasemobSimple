@@ -27,7 +27,7 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
-        android:name="org.sxczst.im.IMApplication"
+        android:name=".IMApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -35,34 +35,29 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name="org.sxczst.im.controller.activity.AddContactActivity" />
+        <activity android:name=".controller.activity.InviteActivity" />
+        <activity android:name=".controller.activity.AddContactActivity" />
         <activity
-            android:name="org.sxczst.im.controller.activity.LoginActivity"
+            android:name=".controller.activity.LoginActivity"
             android:label="@string/login_pager" />
-        <activity android:name="org.sxczst.im.controller.activity.SplashActivity">
+        <activity android:name=".controller.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.sxczst.im.controller.activity.MainActivity" />
-
-        <!-- 设置环信应用的AppKey -->
+        <activity android:name=".controller.activity.MainActivity" /> <!-- 设置环信应用的AppKey -->
         <meta-data
             android:name="EASEMOB_APPKEY"
-            android:value="1128201027019188#demo" />
-
-        <!-- 声明SDK所需的service SDK核心功能 -->
+            android:value="1128201027019188#demo" /> <!-- 声明SDK所需的service SDK核心功能 -->
         <service
             android:name="com.hyphenate.chat.EMChatService"
             android:exported="true" />
         <service
             android:name="com.hyphenate.chat.EMJobService"
             android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-
-        <!-- 声明SDK所需的receiver -->
+            android:permission="android.permission.BIND_JOB_SERVICE" /> <!-- 声明SDK所需的receiver -->
         <receiver android:name="com.hyphenate.chat.EMMonitorReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />

@@ -16,7 +16,7 @@ class ContactTable {
 
         const val COL_IS_CONTACT = "is_contact" //是否是联系人
 
-        const val CREATE_TAB = "create table" +
+        const val CREATE_TAB = "create table " +
                 "$TAB_NAME (" +
                 "$COL_HXID text primary key," +
                 "$COL_NAME text," +
