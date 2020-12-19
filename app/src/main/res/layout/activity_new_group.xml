@@ -6,4 +6,81 @@
     android:layout_height="match_parent"
     tools:context=".controller.activity.NewGroupActivity">
 
+    <com.hyphenate.easeui.widget.EaseTitleBar
+        android:id="@+id/etb_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:titleBarTitle="新建群组" />
+
+    <EditText
+        android:id="@+id/et_new_group_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:hint="群组名称"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etb_title" />
+
+    <EditText
+        android:id="@+id/et_new_group_desc"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="5dp"
+        android:gravity="start"
+        android:hint="群组简介"
+        app:layout_constraintEnd_toEndOf="@id/et_new_group_name"
+        app:layout_constraintStart_toStartOf="@id/et_new_group_name"
+        app:layout_constraintTop_toBottomOf="@id/et_new_group_name" />
+
+    <TextView
+        android:id="@+id/tv_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="是否公开"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@id/et_new_group_name"
+        app:layout_constraintTop_toBottomOf="@id/et_new_group_desc" />
+
+    <CheckBox
+        android:id="@+id/cb_new_group_public"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/tv_1"
+        app:layout_constraintEnd_toEndOf="@id/et_new_group_name"
+        app:layout_constraintTop_toTopOf="@id/tv_1" />
+
+    <TextView
+        android:id="@+id/tv_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="是否开放群邀请"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@id/et_new_group_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_1" />
+
+    <CheckBox
+        android:id="@+id/cb_new_group_invite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/tv_2"
+        app:layout_constraintEnd_toEndOf="@id/et_new_group_name"
+        app:layout_constraintTop_toTopOf="@id/tv_2" />
+
+    <Button
+        android:id="@+id/btn_new_group_create"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/holo_green_light"
+        android:text="创建"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@id/et_new_group_name"
+        app:layout_constraintStart_toStartOf="@id/et_new_group_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_2" />
 </androidx.constraintlayout.widget.ConstraintLayout>
