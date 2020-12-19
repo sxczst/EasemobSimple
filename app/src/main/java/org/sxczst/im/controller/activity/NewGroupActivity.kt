@@ -102,7 +102,7 @@ class NewGroupActivity : AppCompatActivity() {
         // 创建按钮的点击处理事件
         btn_new_group_create.setOnClickListener {
             // 跳转到选择联系人页面
-            Intent(this@NewGroupActivity, PickContactActivity::class.java)
+            val intent = Intent(this@NewGroupActivity, PickContactActivity::class.java)
             startActivityForResult(intent, 1)
         }
     }
