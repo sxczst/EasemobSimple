@@ -123,7 +123,7 @@ class ContactDao(
             // 获取数据库连接 , 执行删除
             dbHelper.readableDatabase.delete(
                 ContactTable.TAB_NAME,
-                "$ContactTable.COL_HXID=?",
+                "${ContactTable.COL_HXID} = ?",
                 arrayOf(hxId)
             )
         }

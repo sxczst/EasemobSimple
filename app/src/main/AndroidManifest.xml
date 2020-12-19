@@ -35,6 +35,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".controller.activity.ChatActivity" />
         <activity android:name=".controller.activity.InviteActivity" />
         <activity android:name=".controller.activity.AddContactActivity" />
         <activity
