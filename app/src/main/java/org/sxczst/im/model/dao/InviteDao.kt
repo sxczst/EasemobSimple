@@ -54,7 +54,9 @@ class InviteDao(var dbHelper: DBHelper) {
                 inviteStatus =
                     int2InvitationStatus(cursor.getInt(cursor.getColumnIndex(InviteTable.COL_STATUS)))  //状态
 
-                if (cursor.getString(cursor.getColumnIndex(InviteTable.COL_GROUP_HXID)).isEmpty()) {
+                if (cursor.getString(cursor.getColumnIndex(InviteTable.COL_GROUP_HXID))
+                        .isNullOrEmpty()
+                ) {
                     // 联系人信息
                     user = UserInfo().apply {
                         hxid = cursor.getString(cursor.getColumnIndex(InviteTable.COL_USER_HXID))
