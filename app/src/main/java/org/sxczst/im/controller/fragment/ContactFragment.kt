@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.header_fragment_contact.*
 import org.sxczst.im.R
 import org.sxczst.im.controller.activity.AddContactActivity
 import org.sxczst.im.controller.activity.ChatActivity
+import org.sxczst.im.controller.activity.GroupListActivity
 import org.sxczst.im.controller.activity.InviteActivity
 import org.sxczst.im.model.Model
 import org.sxczst.im.model.bean.UserInfo
@@ -95,11 +96,18 @@ class ContactFragment : EaseContactListFragment() {
         }
 
         // 点击联系人条目进入会话详情页面
-        setContactListItemClickListener {
-            val intent = Intent(activity, ChatActivity::class.java)
-            // 传递参数信息
-            intent.putExtra(EaseConstant.EXTRA_USER_ID, it.username)
-            startActivity(intent)
+        setContactListItemClickListener { easeUser ->
+            easeUser?.let {
+                val intent = Intent(activity, ChatActivity::class.java)
+                // 传递参数信息
+                intent.putExtra(EaseConstant.EXTRA_USER_ID, easeUser.username)
+                startActivity(intent)
+            }
+        }
+
+        // 跳转到群组列表页面
+        ll_contact_group.setOnClickListener {
+            startActivity(Intent(activity, GroupListActivity::class.java))
         }
     }
 
