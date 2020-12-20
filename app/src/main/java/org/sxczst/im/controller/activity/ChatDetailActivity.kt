@@ -1,7 +1,10 @@
 package org.sxczst.im.controller.activity
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.MotionEvent
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -29,7 +32,13 @@ class ChatDetailActivity : AppCompatActivity() {
      */
     private val mOnGroupDetailListener = object : GroupDetailAdapter.OnGroupDetailListener {
         override fun onAddMembers() {
+            // 跳转到选择联系人页面
+            val intent = Intent(this@ChatDetailActivity, PickContactActivity::class.java)
 
+            // 传递群Id
+            intent.putExtra(Constants.GROUP_ID, mGroup?.groupId)
+
+            startActivityForResult(intent, 1)
         }
 
         /**
@@ -84,12 +93,62 @@ class ChatDetailActivity : AppCompatActivity() {
         initListener()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            // 获取返回来的准备邀请的群成员信息
+            val members = data?.getStringArrayExtra("members")
+
+            Model.instance.executors.execute {
+                try {
+                    // 去环信服务器上邀请群成员
+                    EMClient.getInstance().groupManager().addUsersToGroup(
+                        mGroup?.groupId,
+                        members
+                    )
+
+                    // 刷新界面
+                    runOnUiThread {
+                        Toast.makeText(this@ChatDetailActivity, "发送邀请成功", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                } catch (e: HyphenateException) {
+                    runOnUiThread {
+                        Toast.makeText(this@ChatDetailActivity, "发送邀请失败", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
+
+        }
+    }
+
     /**
      * 初始化监听
      */
     private fun initListener() {
         // 初始化button的提示信息
         initButtonDisplay()
+
+        // 点击空白区域退出删除联系人模式
+        gv_group_detail.setOnTouchListener { v, event ->
+            when (event?.action) {
+                // 判断当前是否是删除模式，
+                MotionEvent.ACTION_DOWN -> if (adapter.mIsDeleteModel) {
+                    // 如果是删除模式，就将它改变为非删除模式
+                    adapter.mIsDeleteModel = false
+
+                    // 刷新页面
+                    adapter.notifyDataSetChanged()
+                }
+                else -> {
+
+                }
+            }
+            // 解决警告
+            v.performClick()
+            false
+        }
     }
 
     /**

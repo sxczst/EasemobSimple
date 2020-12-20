@@ -2,14 +2,16 @@ package org.sxczst.im.controller.activity
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.CheckBox
+import androidx.appcompat.app.AppCompatActivity
+import com.hyphenate.chat.EMClient
 import kotlinx.android.synthetic.main.activity_pick_contact.*
 import org.sxczst.im.R
 import org.sxczst.im.controller.adapter.PickContactAdapter
 import org.sxczst.im.model.Model
 import org.sxczst.im.model.bean.PickContactInfo
+import org.sxczst.im.utils.Constants
 
 /**
  * 选择联系人页面
@@ -92,5 +94,20 @@ class PickContactActivity : AppCompatActivity() {
         }
         adapter = PickContactAdapter(this, pickContacts)
         lv_pick.adapter = adapter
+
+        // 获取传递过来的数据(组Id)
+        getData()
+    }
+
+    /**
+     * 获取传递过来的数据(组Id)
+     */
+    private fun getData() {
+        val groupId = intent.getStringExtra(Constants.GROUP_ID)
+        groupId?.let {
+            val group = EMClient.getInstance().groupManager().getGroup(it)
+            // 获取群组中已经存在的成员
+            adapter.setGroupMembers(group.members)
+        }
     }
 }

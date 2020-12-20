@@ -19,6 +19,10 @@ class PickContactAdapter(
     var mContext: Context,
     var mPickContacts: List<PickContactInfo>
 ) : BaseAdapter() {
+    /**
+     * 群组中已经存在的成员
+     */
+    private var mExistMembers = mutableListOf<String>()
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         // 1. 创建或者获取ViewHolder
         var viewHolder: ViewHolder? = null
@@ -39,6 +43,13 @@ class PickContactAdapter(
         // 3. 展示数据
         viewHolder?.checkBox?.isChecked = pickContactInfo.isChecked
         viewHolder?.name?.text = pickContactInfo.userInfo.name
+
+        // 添加判断
+        if (mExistMembers.contains(pickContactInfo.userInfo.hxid)) {
+            viewHolder?.checkBox?.isChecked = true
+            pickContactInfo.isChecked = true
+        }
+
         // 4. 返回View
         return view ?: convertView ?: View(mContext)
     }
@@ -61,6 +72,15 @@ class PickContactAdapter(
             }
         }
         return picks
+    }
+
+    /**
+     * 添加组成员信息
+     */
+    fun setGroupMembers(members: List<String>) {
+        mExistMembers.clear()
+        mExistMembers.addAll(members)
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(var checkBox: CheckBox, var name: TextView)

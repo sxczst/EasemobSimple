@@ -27,7 +27,7 @@ class GroupDetailAdapter(
      * true ：可以进行删除操作
      * false：不可以进行删除操作
      */
-    private var mIsDeleteModel = false
+    var mIsDeleteModel = false
 
     /**
      * 刷新要显示的数据
