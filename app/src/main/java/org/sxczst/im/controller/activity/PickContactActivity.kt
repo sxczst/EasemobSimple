@@ -1,5 +1,7 @@
 package org.sxczst.im.controller.activity
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.CheckBox
@@ -53,6 +55,18 @@ class PickContactActivity : AppCompatActivity() {
 
             // 刷新页面
             adapter.notifyDataSetChanged()
+        }
+
+        // 保存按钮的点击事件
+        btn_pick_save.setOnClickListener {
+            // 获取已经选择的联系人名称(环信ID)信息
+            val picks = adapter.getPickContacts()
+            val intent = Intent()
+            intent.putExtra("members", picks.toTypedArray())
+            // 设置返回的结果码和联系人信息
+            setResult(Activity.RESULT_OK, intent)
+            // 结束当前页面
+            finish()
         }
     }
 

@@ -11,4 +11,8 @@ object Constants {
 
     // 收到联系人添加邀请的广播
     const val CONTACT_INVITE_CHANGED = "contact_invite_changed"
+
+    // 群邀请变化的广播
+    const val GROUP_INVITE_CHANGED = "group_invite_changed"
+
 }

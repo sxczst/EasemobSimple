@@ -49,5 +49,19 @@ class PickContactAdapter(
 
     override fun getCount(): Int = mPickContacts.size
 
+    /**
+     * 获取选择的联系人
+     */
+    fun getPickContacts(): List<String> {
+        val picks = mutableListOf<String>()
+        mPickContacts.forEach { contact ->
+            // 判断是否选中
+            if (contact.isChecked) {
+                contact.userInfo.name?.let { picks.add(it) }
+            }
+        }
+        return picks
+    }
+
     inner class ViewHolder(var checkBox: CheckBox, var name: TextView)
 }

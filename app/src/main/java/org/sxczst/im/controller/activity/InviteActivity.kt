@@ -22,9 +22,9 @@ import org.sxczst.im.utils.Constants
  */
 class InviteActivity : AppCompatActivity() {
     /**
-     * 联系人邀请信息广播接受者
+     * 联系人邀请信息以及群组邀请信息广播接受者
      */
-    private val contactInviteChangeReceiver = object : BroadcastReceiver() {
+    private val inviteChangeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             refresh()
         }
@@ -90,7 +90,137 @@ class InviteActivity : AppCompatActivity() {
                         refresh()
                     }
                 } catch (e: HyphenateException) {
-                    Toast.makeText(this@InviteActivity, "拒绝邀请失败", Toast.LENGTH_SHORT).show()
+                    runOnUiThread {
+                        Toast.makeText(this@InviteActivity, "拒绝邀请失败", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+        /**
+         * 接受群邀请按钮的点击事件
+         */
+        override fun onInviteAccept(invitationInfo: InvitationInfo) {
+            Model.instance.executors.execute {
+                try {
+                    // 去环信服务器同意群邀请
+                    EMClient.getInstance().groupManager().acceptInvitation(
+                        invitationInfo.group?.groupId,
+                        invitationInfo.group?.invitePerson
+                    )
+
+                    // 本地数据库更新
+                    invitationInfo.inviteStatus = InvitationInfo.InviteStatus.GROUP_ACCEPT_INVITE
+                    Model.instance.dbManager?.inviteDao?.addInvitation(invitationInfo)
+
+                    // 页面(内存)变化
+                    runOnUiThread {
+                        Toast.makeText(this@InviteActivity, "接受了邀请", Toast.LENGTH_SHORT).show()
+                        // 刷新页面
+                        refresh()
+                    }
+                } catch (e: HyphenateException) {
+                    // 页面(内存)变化
+                    runOnUiThread {
+                        Toast.makeText(this@InviteActivity, "接受邀请失败", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+        /**
+         * 拒绝群邀请按钮的点击事件
+         */
+        override fun onInviteReject(invitationInfo: InvitationInfo) {
+            Model.instance.executors.execute {
+                try {
+                    // 去环信服务器拒绝群邀请
+                    EMClient.getInstance().groupManager().declineInvitation(
+                        invitationInfo.group?.groupId,
+                        invitationInfo.group?.invitePerson,
+                        "拒绝您的邀请"
+                    )
+
+                    // 本地数据库更新
+                    invitationInfo.inviteStatus = InvitationInfo.InviteStatus.GROUP_REJECT_INVITE
+                    Model.instance.dbManager?.inviteDao?.addInvitation(invitationInfo)
+
+                    // 页面(内存)变化
+                    runOnUiThread {
+                        Toast.makeText(this@InviteActivity, "拒绝了邀请", Toast.LENGTH_SHORT).show()
+                        // 刷新页面
+                        refresh()
+                    }
+                } catch (e: HyphenateException) {
+                    // 页面(内存)变化
+                    runOnUiThread {
+                        Toast.makeText(this@InviteActivity, "拒绝邀请失败", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+        /**
+         * 接受群申请按钮的点击事件
+         */
+        override fun onApplicationAccept(invitationInfo: InvitationInfo) {
+            Model.instance.executors.execute {
+                try {
+                    // 去环信服务器同意群申请
+                    EMClient.getInstance().groupManager().acceptApplication(
+                        invitationInfo.group?.groupId,
+                        invitationInfo.group?.invitePerson
+                    )
+
+                    // 本地数据库更新
+                    invitationInfo.inviteStatus =
+                        InvitationInfo.InviteStatus.GROUP_ACCEPT_APPLICATION
+                    Model.instance.dbManager?.inviteDao?.addInvitation(invitationInfo)
+
+                    // 页面(内存)变化
+                    runOnUiThread {
+                        Toast.makeText(this@InviteActivity, "接受了申请", Toast.LENGTH_SHORT).show()
+                        // 刷新页面
+                        refresh()
+                    }
+                } catch (e: HyphenateException) {
+                    // 页面(内存)变化
+                    runOnUiThread {
+                        Toast.makeText(this@InviteActivity, "接受申请失败", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+        /**
+         * 拒绝群申请按钮的点击事件
+         */
+        override fun onApplicationReject(invitationInfo: InvitationInfo) {
+            Model.instance.executors.execute {
+                try {
+                    // 去环信服务器拒绝群申请
+                    EMClient.getInstance().groupManager().declineApplication(
+                        invitationInfo.group?.groupId,
+                        invitationInfo.group?.invitePerson,
+                        "拒绝您的申请"
+                    )
+
+                    // 本地数据库更新
+                    invitationInfo.inviteStatus =
+                        InvitationInfo.InviteStatus.GROUP_REJECT_APPLICATION
+                    Model.instance.dbManager?.inviteDao?.addInvitation(invitationInfo)
+
+                    // 页面(内存)变化
+                    runOnUiThread {
+                        Toast.makeText(this@InviteActivity, "拒绝了申请", Toast.LENGTH_SHORT).show()
+                        // 刷新页面
+                        refresh()
+                    }
+                } catch (e: HyphenateException) {
+                    // 页面(内存)变化
+                    runOnUiThread {
+                        Toast.makeText(this@InviteActivity, "拒绝申请失败", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
@@ -106,7 +236,7 @@ class InviteActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         // 取消广播
-        mLBM.unregisterReceiver(contactInviteChangeReceiver)
+        mLBM.unregisterReceiver(inviteChangeReceiver)
     }
 
     private fun initData() {
@@ -119,8 +249,13 @@ class InviteActivity : AppCompatActivity() {
         // 动态注册邀请信息变化广播的接受者
         mLBM = LocalBroadcastManager.getInstance(this)
         mLBM.registerReceiver(
-            contactInviteChangeReceiver,
+            inviteChangeReceiver,
             IntentFilter(Constants.CONTACT_INVITE_CHANGED)
+        )
+        // 监听群邀请信息变化的广播
+        mLBM.registerReceiver(
+            inviteChangeReceiver,
+            IntentFilter(Constants.GROUP_INVITE_CHANGED)
         )
     }
 

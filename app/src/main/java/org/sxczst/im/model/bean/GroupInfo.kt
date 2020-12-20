@@ -14,7 +14,7 @@ class GroupInfo {
 
     }
 
-    constructor(groupName: String, groupId: String, invitePerson: String) {
+    constructor(groupName: String?, groupId: String?, invitePerson: String?) {
         this.groupName = groupName
         this.groupId = groupId
         this.invitePerson = invitePerson

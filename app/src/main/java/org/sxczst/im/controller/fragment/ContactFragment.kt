@@ -66,6 +66,20 @@ class ContactFragment : EaseContactListFragment() {
         }
     }
 
+    /**
+     * 用于接受群组邀请变化广播的广播接受者
+     */
+    private val groupChangeReceiver = object : BroadcastReceiver() {
+        /**
+         * 接收到广播
+         */
+        override fun onReceive(context: Context?, intent: Intent?) {
+            // 更新红点显示
+            ivContactRed?.visibility = View.VISIBLE
+            SpUtils.instance?.save(SpUtils.IS_NEW_INVITE, true)
+        }
+    }
+
     private var mLBM: LocalBroadcastManager? = null
 
     /**
@@ -138,6 +152,11 @@ class ContactFragment : EaseContactListFragment() {
         mLBM?.registerReceiver(
             contactChangeReceiver,
             IntentFilter(Constants.CONTACT_CHANGED)
+        )
+        // 用于接受群组邀请变化的广播
+        mLBM?.registerReceiver(
+            groupChangeReceiver,
+            IntentFilter(Constants.GROUP_INVITE_CHANGED)
         )
 
         // 从环信服务器获取所有的联系人信息
@@ -272,5 +291,6 @@ class ContactFragment : EaseContactListFragment() {
         // 关闭广播接受器
         mLBM?.unregisterReceiver(contactInviteChangeReceiver)
         mLBM?.unregisterReceiver(contactChangeReceiver)
+        mLBM?.unregisterReceiver(groupChangeReceiver)
     }
 }

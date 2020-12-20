@@ -93,6 +93,71 @@ class InviteAdapter(
             }
         } else {
             // 群组邀请
+
+            // 显示名称
+            viewHolder?.name?.text = invitationInfo.group?.invitePerson
+
+            // 显示原因
+            viewHolder?.reason?.text = invitationInfo.reason
+
+            // 按钮的默认状态
+            viewHolder?.accept?.visibility = View.GONE
+            viewHolder?.reject?.visibility = View.GONE
+
+            // 状态
+            when (invitationInfo.inviteStatus) {
+                InvitationInfo.InviteStatus.NEW_GROUP_INVITE -> {
+                    viewHolder?.reason?.text = "您收到了群邀请"
+                    viewHolder?.accept?.visibility = View.VISIBLE
+                    viewHolder?.reject?.visibility = View.VISIBLE
+                    // 按钮的事件处理
+                    viewHolder?.accept?.setOnClickListener {
+                        mOnInviteListener.onInviteAccept(invitationInfo)
+                    }
+                    viewHolder?.reject?.setOnClickListener {
+                        mOnInviteListener.onInviteReject(invitationInfo)
+                    }
+                }
+                InvitationInfo.InviteStatus.NEW_GROUP_APPLICATION -> {
+                    viewHolder?.reason?.text = "您收到了加入群聊的申请"
+                    viewHolder?.accept?.visibility = View.VISIBLE
+                    viewHolder?.reject?.visibility = View.VISIBLE
+                    // 按钮的事件处理
+                    viewHolder?.accept?.setOnClickListener {
+                        mOnInviteListener.onApplicationAccept(invitationInfo)
+                    }
+                    viewHolder?.reject?.setOnClickListener {
+                        mOnInviteListener.onApplicationReject(invitationInfo)
+                    }
+                }
+                InvitationInfo.InviteStatus.GROUP_INVITE_ACCEPTED -> {
+                    viewHolder?.reason?.text = "同意了您的邀请"
+                }
+                InvitationInfo.InviteStatus.GROUP_APPLICATION_ACCEPTED -> {
+                    viewHolder?.reason?.text = "同意了您的申请"
+                }
+                InvitationInfo.InviteStatus.GROUP_INVITE_DECLINED -> {
+                    viewHolder?.reason?.text = "拒绝了您的邀请"
+                }
+                InvitationInfo.InviteStatus.GROUP_APPLICATION_DECLINED -> {
+                    viewHolder?.reason?.text = "拒绝了您的申请"
+                }
+                InvitationInfo.InviteStatus.GROUP_ACCEPT_INVITE -> {
+                    viewHolder?.reason?.text = "您同意了群邀请"
+                }
+                InvitationInfo.InviteStatus.GROUP_ACCEPT_APPLICATION -> {
+                    viewHolder?.reason?.text = "您同意了他的群申请"
+                }
+                InvitationInfo.InviteStatus.GROUP_REJECT_INVITE -> {
+                    viewHolder?.reason?.text = "您拒绝了群邀请"
+                }
+                InvitationInfo.InviteStatus.GROUP_REJECT_APPLICATION -> {
+                    viewHolder?.reason?.text = "您拒绝了他的群申请"
+                }
+                else -> {
+
+                }
+            }
         }
         // 4. 返回View
         return view ?: convertView ?: View(context)
@@ -123,5 +188,26 @@ class InviteAdapter(
          *
          */
         fun onReject(invitationInfo: InvitationInfo)
+
+        /**
+         * 接受群邀请按钮的点击事件
+         */
+        fun onInviteAccept(invitationInfo: InvitationInfo)
+
+        /**
+         * 拒绝群邀请按钮的点击事件
+         */
+        fun onInviteReject(invitationInfo: InvitationInfo)
+
+        /**
+         * 接受群申请按钮的点击事件
+         */
+        fun onApplicationAccept(invitationInfo: InvitationInfo)
+
+        /**
+         * 拒绝群申请按钮的点击事件
+         */
+        fun onApplicationReject(invitationInfo: InvitationInfo)
+
     }
 }

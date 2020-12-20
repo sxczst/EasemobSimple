@@ -85,6 +85,8 @@ class NewGroupActivity : AppCompatActivity() {
                 )
                 runOnUiThread {
                     Toast.makeText(this@NewGroupActivity, "创建群组成功", Toast.LENGTH_SHORT).show()
+                    // 结束当前页面
+                    finish()
                 }
             } catch (e: HyphenateException) {
                 runOnUiThread {
