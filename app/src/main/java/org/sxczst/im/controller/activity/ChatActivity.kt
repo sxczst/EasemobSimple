@@ -1,21 +1,68 @@
 package org.sxczst.im.controller.activity
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import com.hyphenate.chat.EMMessage
 import com.hyphenate.easeui.EaseConstant
 import com.hyphenate.easeui.ui.EaseChatFragment
-import com.superrtc.mediamanager.EMediaManager.initData
+import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider
 import org.sxczst.im.R
+import org.sxczst.im.utils.Constants
 
 /**
  * 会话详情页面
  */
 class ChatActivity : AppCompatActivity() {
+    private var mHxid: String? = null
+    private lateinit var easeChatFragment: EaseChatFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
         initView()
         initData()
+        initListener()
+    }
+
+    /**
+     * 初始化全局的监听
+     */
+    private fun initListener() {
+        easeChatFragment.setChatFragmentHelper(object : EaseChatFragment.EaseChatFragmentHelper {
+            override fun onAvatarClick(username: String?) {
+            }
+
+            override fun onMessageBubbleClick(message: EMMessage?): Boolean = false
+
+            override fun onAvatarLongClick(username: String?) {
+            }
+
+            override fun onMessageBubbleLongClick(message: EMMessage?) {
+            }
+
+            override fun onSetCustomChatRowProvider(): EaseCustomChatRowProvider? = null
+
+            override fun onSetMessageAttributes(message: EMMessage?) {
+            }
+
+            override fun onExtendMenuItemClick(itemId: Int, view: View?): Boolean = false
+
+            /**
+             * 进入会话详情页面
+             */
+            override fun onEnterToChatDetails() {
+                val intent = Intent(this@ChatActivity, ChatDetailActivity::class.java)
+                // 传递参数
+
+                // 群Id
+                intent.putExtra(Constants.GROUP_ID, mHxid)
+
+                startActivity(intent)
+            }
+        })
+
     }
 
     /**
@@ -30,9 +77,9 @@ class ChatActivity : AppCompatActivity() {
      */
     private fun initData() {
         // 创建一个会话的Fragment
-        val easeChatFragment = EaseChatFragment()
+        easeChatFragment = EaseChatFragment()
 
-        val mHxid = intent.getStringExtra(EaseConstant.EXTRA_USER_ID)
+        mHxid = intent.getStringExtra(EaseConstant.EXTRA_USER_ID)
 
         // 传递进行会话的用户信息
         easeChatFragment.arguments = intent.extras

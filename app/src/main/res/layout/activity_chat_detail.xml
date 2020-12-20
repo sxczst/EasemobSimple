@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controller.activity.ChatDetailActivity">
+
+    <com.hyphenate.easeui.widget.EaseTitleBar
+        android:id="@+id/etb_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:titleBarTitle="群详情" />
+
+    <GridView
+        android:id="@+id/gv_group_detail"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:horizontalSpacing="10dp"
+        android:numColumns="4"
+        android:verticalSpacing="10dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_group_detail_out"
+        app:layout_constraintTop_toBottomOf="@id/etb_title"
+        tools:listitem="@layout/item_group_detail" />
+
+    <Button
+        android:id="@+id/btn_group_detail_out"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="@android:color/holo_red_light"
+        android:text="退出群聊"
+        android:textColor="@android:color/white"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,7 +7,7 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "org.sxczst.atguiguim"
+        applicationId "org.sxczst.im"
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 1

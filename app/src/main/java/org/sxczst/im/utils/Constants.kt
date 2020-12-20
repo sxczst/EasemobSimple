@@ -15,4 +15,10 @@ object Constants {
     // 群邀请变化的广播
     const val GROUP_INVITE_CHANGED = "group_invite_changed"
 
+    // 群ID
+    const val GROUP_ID = "group_id"
+
+    // 退出群聊
+    const val EXIT_GROUP = "exit_group"
+
 }
